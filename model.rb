@@ -9,7 +9,8 @@ module Model
       sql = "insert into device "
       sql << "(device_type_sc,device_name,owner_type_sc,owner_id,unique_id,apple_id,apple_id_password,apple_title,apple_slogan,charge_start_date,charge_end_date,is_active,note,create_user,create_date,last_modify_user,last_modify_date,is_deleted )"
       sql << " values "
-      sql << "('#{device_type_sc}','#{device_name}',#{owner_type_sc},'#{owner_id}','#{unique_id}','#{apple_id}','#{apple_id_password}','#{apple_title}','#{apple_slogan}','#{charge_start_date}','#{charge_end_date}','#{is_active}','#{note}','#{create_user}','#{create_date}','#{last_modify_user}','#{last_modify_date}','#{is_deleted}')"
+      sql << "('#{device_type_sc}','#{device_name}',#{owner_type_sc},'#{owner_id}','#{unique_id}','#{apple_id}','#{apple_id_password}','#{apple_title}','#{apple_slogan}','#{charge_start_date}','#{charge_end_date}','#{is_active}'+0,'#{note}','#{create_user}','#{create_date}','#{last_modify_user}','#{last_modify_date}','#{is_deleted}'+0)"
+      puts sql
       insert(sql)
     end
   end

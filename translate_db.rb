@@ -37,7 +37,7 @@ class TranslateDB < Connection
 
 
   def convert_db(row)
-    puts "=========================\n"
+    puts "============ #{row['device_name']} =============\n"
     device_name = find_device_name(row)
     puts "device_name:#{device_name}"
     if last_id = check_exist_device(device_name)
@@ -48,7 +48,6 @@ class TranslateDB < Connection
     end
     puts "last id is #{last_id}"
     insert_device_accepters(row,last_id)
-    puts "=========================\n"
   end
 
 
@@ -79,7 +78,6 @@ class TranslateDB < Connection
     device = query("select id from device where device_name = '#{device_name}'")
     last_id = 0
     puts "select id from device where device_name = '#{device_name}'"
-    puts device.first.inspect
     if device.size > 0
       last_id = device.first["id"]
     end
@@ -97,13 +95,13 @@ class TranslateDB < Connection
     device.unique_id = SecureRandom.uuid.to_s
     device.charge_start_date = row["start_charging"]
     device.charge_end_date =  row["stop_charging"]
-    device.is_active = row["status"] 
+    device.is_active = row["status"]=="1" ? "1" : "0" 
     device.note = row["note"]
     device.create_user = row["note"]
     device.create_date = row["rent_date"]!= nil ? row["rent_date"] : row["last_user_date"]
     device.last_modify_user = row["last_user_id"]
     device.last_modify_date = row["last_user_date"]
-    device.is_deleted = 0
+    device.is_deleted = row["status"]=="3" ? "1" : "0"
     device.save
   end
 
