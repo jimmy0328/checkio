@@ -85,20 +85,25 @@ class TranslateDB < Connection
     last_id
   end
 
-  def insert_device(row,device_name)
+  def insert_device(row,location_name)
     device = Device.new
     device.device_type_sc = row["device_type"]
-    device.device_name = device_name
+    device.device_name = row["device_name"]
+    #device.location_name = location_name
+    device.location_name = ""
     device.owner_type_sc = 1
     device.owner_id = 1
     device.apple_id =row["apple_id"]
+    device.apple_title = row["remark"]
+    device.apple_slogan = row["title"]
     device.apple_id_password =row["apple_id_pw"]
-    device.unique_id = SecureRandom.uuid.to_s
+    #device.unique_id = SecureRandom.uuid.to_s
+    device.unique_id = row["device_name"]
     device.charge_start_date = row["start_charging"]
     device.charge_end_date =  row["stop_charging"]
-    device.is_active = row["status"]== 1 ? "1" : "0" 
+    #device.is_active = row["status"]== 1 ? "1" : "0" 
     device.note = row["note"]
-    device.create_user = row["note"]
+    device.create_user = row["last_user_id"]
     device.create_date = row["rent_date"]!= nil ? row["rent_date"] : row["last_user_date"]
     device.last_modify_user = row["last_user_id"]
     device.last_modify_date = row["last_user_date"]
@@ -112,8 +117,11 @@ class TranslateDB < Connection
     accepter.custodian_type_sc = row["role_id"]
     accepter.custodian_id   = row["assign_id"]
     accepter.org_id  = row["group_id"]
+    accepter.is_active = row["status"]== 1 ? "1" : "0" 
     accepter.create_user = row["last_user_id"]
     accepter.create_date = row["last_user_date"]
+    accepter.last_modify_user = row["last_user_id"]
+    accepter.last_modify_date = row["last_user_date"]
     accepter.save
   end
 
